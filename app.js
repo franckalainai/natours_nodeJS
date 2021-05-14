@@ -8,7 +8,7 @@ const port = 3000;
 
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`));
 
-app.get('/api/v1/tours', (req, res) => {
+const getAllTours = (req, res) => {
     res.status(200).json({
         status: 'success',
         results: tours.length,
@@ -16,9 +16,9 @@ app.get('/api/v1/tours', (req, res) => {
             tours
         }
     });
-});
+};
 
-app.get('/api/v1/tours/:id', (req, res) => {
+const getTour = (req, res) => {
     console.log(req.params);
     
     //convert id to a number
@@ -38,9 +38,9 @@ app.get('/api/v1/tours/:id', (req, res) => {
             tour
         }
     });
-});
+};
 
-app.post('/api/v1/tours', (req, res) => {
+const createTour = (req, res) => {
     // body is a property available in req request
     //console.log(req.body);
     const newID = tours[tours.length - 1].id + 1;
@@ -54,9 +54,9 @@ app.post('/api/v1/tours', (req, res) => {
             }
         })
     }); 
-});
+};
 
-app.patch('/api/v1/tours/:id', (req, res) => {
+const updateTour = (req, res) => {
     if(req.params.id * 1 > tours.length){
         res.status(404).json({
             status: "Failed",
@@ -70,9 +70,9 @@ app.patch('/api/v1/tours/:id', (req, res) => {
             tour: '<Update tour here>'
         }
     });
-});
+};
 
-app.delete('/api/v1/tours/:id', (req, res) => {
+const deleteTour = (req, res) => {
     if(req.params.id * 1 > tours.length){
         res.status(404).json({
             status: "Failed",
@@ -84,18 +84,18 @@ app.delete('/api/v1/tours/:id', (req, res) => {
         status: 'success',
         data: null
     });
-});
+};
 
+app
+.route('/api/v1/tours')
+.get(getAllTours)
+.post(createTour);
 
-/*
-app.post('/', (req, res) => {
-    res.send('you can post to this endpoint');
-});
-
-app.get('/', (req, res) => {
-    res.status(200).json({message: 'Hello from the server side !', app: 'Natours'});
-});
-*/
+app
+.route('/api/v1/tours/:id')
+.get(getTour)
+.patch(updateTour)
+.delete(deleteTour)
 
 app.listen(port, () => {
     console.log(`App running on port ${port}...`);  
