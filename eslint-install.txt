@@ -1,0 +1,1 @@
+npm i eslint prettier eslint-config-prettier eslint-plugin-prettier eslint-config-airbnb eslint-plugin-node eslint-plugsx-a11y eslint-plugin-react --save-dev
